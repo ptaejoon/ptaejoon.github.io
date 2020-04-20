@@ -36,7 +36,7 @@ Grover같은 가짜 뉴스 생성기에 대항하는 입증 기술을 만드는 
    
 사람들은 사람이 직접 쓴 허위 정보보다 Grover로 만든 허위 정보가 더 믿을만하다고 평가했습니다. 따라서, Grover와 같은 생성자들에 대한 정보 입증 기술을 발전시키는 것은 매우 중요한 연구 주제입니다. 우리는 구별자가 5000개의 Grover가 생성한 기사를 참고하고, 실제 뉴스 기사는 제한 없이 참조할 수 있다고 가정했습니다. 이 환경 구성에서 가장 우수한 deep pretrained language models은 73%를 달성하였습니다. 그러나, Grover 가 discriminator로 작동할때, 92%의 성능을 내는 것을 확인할 수 있었습니다. 즉, 가짜 뉴스를 생성하는 모델이 가짜 뉴스를 가장 잘 구분한다는 것이었습니다.
    
-또한 우리는 어떻게 deep pretrained language model들이 실제 뉴스와 가짜 뉴스를 구분하는지 연구했습니다. 이때, 뉴스 생성중에 주된 요소가 노출 편향(exposure bias)로써 생성되는 것을 알 수 있었습니다. 즉, 생성자는 완벽하지 않기에, 기사 길이가 늘어나며 out-of-distribution(비정상 샘플) 을 더 떨어트리는 분포에서 샘플링을 진행합니다.
+또한 우리는 어떻게 deep pretrained language model들이 실제 뉴스와 가짜 뉴스를 구분하는지 연구했습니다. 이때, 뉴스 생성 중에 구분에 필요한 artifact가 주된 요소가 노출 편향(exposure bias)로써 생성되는 것을 알 수 있었습니다. 즉, 생성자는 완벽하지 않기에, 기사 길이가 늘어나며 out-of-distribution(비정상 샘플) 을 더 떨어트리는 분포에서 샘플링을 진행합니다.
 그러나, 이러한 효과를 완화하는 이 sampling 전략은 또한 discriminator가 이용할 수 있는 강력한 도구를 제공합니다.
    
 *(Policy 부분 문단 생략하였습니다.)
@@ -45,7 +45,7 @@ Grover같은 가짜 뉴스 생성기에 대항하는 입증 기술을 만드는 
 사람들이 작성한 가짜 뉴스가 다양하기 때문에 adversary가 무엇을 해야할지, 그리고 이를 확인하는 verifier는 무엇을 해야할지 제시하고자 합니다.
 
 <h5>가짜 뉴스의 범위.</h5>   
-가짜 뉴스는 풍자부터 선동까지 그 범주가 넓습니다. 이 논문에서는 텍스트로만 구성된 뉴스 기사 형식의 문서로 제한합니다. 현재의 가짜 뉴스들은 대부분 사람이 직접 작성하였으며, 클릭을 통한 광고 수익이나, 전파하고자 하는 정보를 알리려는 선전용 기사가 존재합니다. 이 기사들은 adversary로 하여금 주어진 제안이나, 바이럴 컨텐츠만을 제공해야 할지 선택하게 합니다. *
+가짜 뉴스는 풍자부터 선동까지 그 범주가 넓습니다. 이 논문에서는 텍스트로만 구성된 뉴스 기사 형식의 문서로 제한합니다. 현재의 가짜 뉴스들은 대부분 사람이 직접 작성하였으며, 클릭을 통한 광고 수익이나, 전파하고자 하는 정보를 알리려는 선전용 기사가 존재합니다. 이 기사들은 adversary로 하여금 주어진 제안이나, 바이럴 컨텐츠 제공같은 특정 주제에 대한 선택을 하게 만듭니다.
 
 <h5>팩트 체크와 입증 ( 관련 연구 )</h5>
 온라인 허위 사실을 맞서려는 상당한 연구가 있었습니다. 페이스북의 경우 믿을만한 소스들을 우선시하고, 허위 사실을 유포하는 계정을 차단하였습니다. 혹은 유저들이 NewsGuard, Hoaxy같은 툴을 사용해 가짜 뉴스를 피하는 경우, Snopes,PolitiFact같은 웹사이트를 사용하는 경우도 있었습니다. 이 서비스들은 주장과 기사, 전체 웹사이트를 분석하려는 수동적인 노력에 의존합니다. 자동으로 만들어진 가짜 뉴스를 찾는데는 주로 글 스타일의 편향성을 이용합니다. 이런 노력들은 의심스러운 계정들을 차단하는데 도움이 되었습니다. 그러나, 팩트 체킹은 만병통치약은 아닙니다. 역효과 현상(backfire effect)이나 확증 편향(confirmation bias)와 같은 인지 편향(cognitive biases) 은 사람들이 자신이 믿는 성향의 뉴스를 더 잘 믿게 만듭니다.
@@ -75,7 +75,7 @@ p(domain, date, authors, headline, body)  - (Equation 2)
 
 아직 이 식으로부터 어떻게 샘플을 만들지 명확하지 않습니다. 하나의 방법은 article's field를 canonical order로 정의하는 것입니다. 그 뒤 order 순서대로 model을 구성합니다. 그러나 이런 ordering 방식은 너무 비용이 큰 marginalization 없이는 sampling을 금지합니다. * 
 
-Grover의 접근법은 multi-field를 가진 문서들을 효율적으로 생성하는 새로운 접근법을 사용합니다. Grover는 Equation 1의 모델 프레임워크가 Equation 2로 유연하게 분해되도록 하는 방식을 채택했습니다. inference를 하는 동안 f의 집합 field F로 시작합니다. 이때 f는 field-specific한 start, end 토큰을 가지고 있습니다.   우리는 field를 (domain,date,authors,headlines,body) 순으로 정렬하고 resulting token을 합쳤습니다. 생성해야하는 target인 target field를 만들기 위해서, start token (start-r) 로 추가했습니다. 그리고 (end-r)에 닿을때까지 모델을 시도합니다.
+Grover의 접근법은 multi-field를 가진 문서들을 효율적으로 생성하는 새로운 접근법을 사용합니다. Grover는 Equation 1의 모델 프레임워크가 Equation 2로 유연하게 분해되도록 하는 방식을 채택했습니다. inference를 하는 동안 f의 집합 field F로 시작합니다. 이때 f는 field-specific한 start, end 토큰을 가지고 있습니다.   우리는 field를 (domain,date,authors,headlines,body) 순으로 정렬하고 resulting token을 합쳤습니다. 생성해야하는 target인 target field인 r을 만들기 위해서, start token (start-r) 로 추가했습니다. 그리고 (end-r)에 닿을때까지 모델을 시도합니다.
 
 Figure 2는 어떻게 Grover가 백신을 반대하는 기사를 만드는지의 일련의 과정입니다. 적대자가 domain, date, headline을 입력받습니다. 그 뒤 body를 만들고, 이는 다시 author와 headline을 만드는데 사용가능합니다.
 
@@ -109,7 +109,7 @@ Grover는 2019년 4월 테스트 셋을 이용해서 validation을 진행했습�
 Grover로 샘플링 하는 것은 모델이 left-to-right 언어 모델처럼 진행하기에 복잡하지 않아 보입니다.
 그러나 디코딩 알고리즘을 잘 고르는 것이 중요합니다. 최대가능도(likelihood-maximization) 전략이 closed-ended 생성에서 잘 동작하였지만, open-ended generation에서 degenerate text를 만드는 것을 확인할 수 있었습니다.* 그러나, 6장에서 볼 수 있듯이, 분산값을 제한하는 것 또한 중요합니다.
 
-이 논문에서는 Nucleus Sampling을 사용합니다. 제한값 p가 주어질때, 각 스텝마다 누적 확률이 top p%에 속하는 단어들로 샘플링을 합니다.
+이 논문에서는 Nucleus Sampling을 사용합니다. 제한값 p가 주어질때, 각 스텝마다 누적 확률이 top p%에 속하는 단어들로 샘플링을 합니다. (높은 확률 순으로 p%가 될때까지 단어들을 선택하는 것을 의미합니다.)
 
 <h2>4. Humans are Easily Fooled by Grover-written Propaganda</h2>
 가장 큰 모델인 Grover-mega로 만든 허위 정보를 평가했습니다. 제한값 p=0.96입니다. 4 종류의 기사를 함께 준비합니다. 사람이 쓴 저명한 뉴스 기사 (Human News), Grover가 해당 Human News를 이용해 쓴 (Machine News), 가짜 뉴스 웹사이트의 기사(Human Propaganda), 그리고 Graver가 해당 Human Propaganda를 이용해 쓴 (Machine Propaganda) 가 그 4 종류의 기사입니다. Amazon Mechanical Turk를 이용해 세 가지를 평가했습니다.
@@ -165,17 +165,17 @@ Eq1를 최대화시키는 모델은 오직 사람이 쓴 기사로만 학습이 
 
 exposure bias가 artifiacts를 만들어낸다는 것이 중요한 점이라고 고려하여 실험하였습니다. Figure 6에서 (body) 텍스트의 제한값 top-p를 0.96과 1로 설정한 Grover-Mega에 대한 perplexity, 그리고 사람이 작성한 텍스트의 perplexity를 그렸습니다. 
    
-(starbody) 다음 바로 첫 토큰을 만드는 것은 높은 perplexity를 초래했습니다. 그러나, 남은 position들은 의문스러운 패턴을 만들어냈습니다. 사람이 쓴 텍스트가 무작위로 샘플링된 텍스트보다 perplexity가 낮고, 이는 sequence 가 길어질수록 차이가 커졌습니다. * 즉 무작위 샘플링은 Grover가 사람의 언어 분포에서 확연히 떨어지게 만드는 것입니다. 반면, 분산값을 제한할 경우 사람보다 더 낮은 perplexity를 만들어냈습니다.   
-   
+(starbody) 다음 바로 첫 토큰을 만드는 것은 높은 perplexity를 초래했습니다. 그러나, 남은 position들은 의문스러운 패턴을 만들어냈습니다. 사람이 쓴 텍스트가 무작위로 샘플링된 텍스트보다 perplexity가 낮고, 이는 sequence 가 길어질수록 차이가 커졌습니다. 즉 무작위 샘플링은 Grover가 사람의 언어 분포에서 확연히 떨어지게 만드는 것입니다. 반면, 분산값을 제한할 경우 사람보다 더 낮은 perplexity를 만들어냈습니다.   
+       
 <h4>Limiting the variance of a model also creates artifacts</h4>
-한편, 모델의 분산을 잘라내는 것 또한 artifacts를 남기는데, 이 사례는 (Strobelt and Gehrmann,2019) 를 통해 확인할 수 있습니다. 비슷한 현상이 Nucleus (top-p) sampling 에 나타납니다.* 사람이 쓴 기사의 모든 토큰들이 분포의 top-p에서만 나왔을 확률이 Pn이며, n은 기사의 길이입니다. 이 확률은 n이 증가하며 점점 0으로 갑니다. 그러나, Nucleus Sampled text 는 모든 토큰들이 top-p에서 옵니다. *
+한편, 모델의 분산을 잘라내는 것 또한 artifacts를 남기는데, 이 사례는 (Strobelt and Gehrmann,2019) 를 통해 확인할 수 있습니다. 비슷한 현상이 Nucleus (top-p) sampling 에 나타납니다. 사람이 쓴 기사의 모든 토큰들이 분포의 top-p 내의 확률에서만 나왔을 확률이 P의 n승(p^n)이며, n은 기사의 길이입니다. 이 확률은 n이 증가하며 점점 0으로 갑니다. 그러나, Nucleus Sampled text 는 모든 토큰들이 top-p 내부의 확률에서 산출됩니다.
    
 구별자를 어떻게 고르느냐에 따라 artifact가 보일지 안보일지 결정됩니다. 만약 구별자가 생성자와 다른 p값을 갖는다면 hard time pinpointing 1-p tail 이는 BERT의 낮은 성능을 설명합니다.
    
 <h4>a sweet spot of careful variance reduction</h4>
 분산값을 줄이지 않는 것 혹은 너무 많이 줄이는 것 둘 다 문제가 생깁니다. 아마도 이를 조절하는 이상적인 값이 있는 것일까요? 실험 결과는 구별자마다 약 0.92부터 0.98 사이의 이상값을 갖는다고 합니다. 그러나 BERT가 결국 항상 다른 Grover보다 낮은데 이는 top-p 를 낮게 쓴다고 해도 많은 정보를 제공해주는 것은 아니라는 의미입니다. 이는 BERT의 language view가 Grover와 매우 다르다는 우리의 가설을 뒷받침해줍니다. 낮은 top-p가 없어진 tail에 대한 정보를 제공하는 것은 아니란 겁니다.
    
-결국, Grover는 Grover가 만든 가짜 뉴스를 잡는 데 가장 뛰어난데, 이는 tail이 어딨는지 알기 가장 좋기 때문입니다. *
+결국, Grover는 Grover가 만든 가짜 뉴스를 잡는 데 가장 뛰어난데, 이는 top-p로 잘라낸 tail이 어딨는지 알기 가장 좋기 때문입니다.
 
 이미지의 왼쪽은 사람이 쓴 가짜뉴스와, 같은 주제로 Grover로 작성한 가짜뉴스의 일부입니다. 얼마나 유사하게 잘 만드는지 확인할 수 있습니다.
 ![tr6.png](/asset/translation/tr6.png)
