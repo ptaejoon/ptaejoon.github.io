@@ -60,7 +60,7 @@ Grover는 기사들의 Metadata를 주목했습니다. Grover에선 기사의 �
 또한 위의 그림처럼, context가 완벽하지 않더라도 body를 생성하고, 생성된 body를 이용해 빈 context를 채울 수 있습니다.   
 
 <h2>4. Discrimination </h2>
-	(cls)
+Grover가 Discriminator로서 작동하는 방식은 GPT가 동작하는 방식과 동일합니다. Grover가 할 일은 해당 기사가 가짜 뉴스인지, 진짜 뉴스인지 구분하는 것입니다. 이를 위해서 각 기사의 끝에마다 (cls) 라는 특별한 토큰을 삽입합니다. 그리고 cls에서의 Hidden State를 뽑아냅니다. 이 Hidden State를 linear layer 에 input으로 주어 discrimination을 수행합니다.   
 
 <h2>5. 왜 Grover가 더 좋을까? </h2>
 그렇다면 GPT2와 같은 모델을 사용했는데 왜 Grover가 더 좋은 성능을 도출할까요?   
