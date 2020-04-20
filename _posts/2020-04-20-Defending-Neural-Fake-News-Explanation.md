@@ -41,7 +41,7 @@ Transformer는 다음에 올 토큰을 계산할 때 아래와 같은 수식을 
 GPT2의 경우 BERT처럼 bidirectinoal 하지는 않습니다. 따라서 GPT2는 문장의 sequence를 순서대로 생성하고, 생성하면서 또 생성한 데이터를 input으로 사용하며 계속 sequence를 만들어갑니다. (start) 토큰으로 시작해 (end) 토큰이 발생할 때까지 계속 토큰을 생성한다고 보면 될 것 같습니다.   
 
 <h2>2. Top-p sampling (nucleus sampling)</h2>   
-본 논문에선 다음에 들어올 토큰을 선택할 때 top-p sampling 을 이용해 문장을 선택하는 방법을 채택하였습니다. NLP 모델에서 빈도를 이용해 단어의 빈도가 가장 높은 단어 순서대로 K개를 선택하고, 이를 확률적으로 나눠 선택하는 Top-k 방식을 선택합니다.   
+본 논문에선 다음에 들어올 토큰을 선택할 때 top-p sampling 을 이용해 문장을 선택하는 방법을 채택하였습니다. NLP 모델에서 빈도를 이용해 단어의 빈도가 가장 높은 단어 순서대로 K개를 선택하고, 이를 확률적으로 나눠 선택하는 Top-k 방식을 선택합니다.    
 Top-p 방식은 Nucleus 샘플링이라고도 하며, 토큰의 확률이 가장 높은 순으로 토큰들의 누적합이 p가 될때까지 포함한 단어를 선택하는 방식입니다. Top-k와 다르게, flat distribution에서 top-p는 더 좋은 효과를 거둘 수 있습니다. 위 논문에서 Grover가 더 사람같은 어휘를 구사할 수 있었던 것은 top-k 방식이 아닌 top-p 방식을 사용했기 때문입니다. 또한, peaked distribution에 대해서도, top-p 방식은 확률이 높은 소수만 선택하게 되지만, top-k sampling을 사용할 경우 확률이 매우 낮은 샘플을 어쩔 수 없이 선택하는 문제가 발생할 수 있습니다.   
 ![top-p](/asset/explanation/exp1.png)
 위의 그림은 "The Curious Case of Neural Text Degeneration"의 3.1 Top-p Sampling 에서 가져온 이미지 입니다.
