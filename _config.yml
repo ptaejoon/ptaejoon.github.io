@@ -22,7 +22,7 @@ texture:
 
   # generate social links in footer
   social_links:
-    github:  ptaejoon
+    github: ptaejoon
     linkedIn: in/taejoonp
     rss: rss
  
