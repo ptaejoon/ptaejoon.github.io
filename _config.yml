@@ -14,7 +14,7 @@ sass:
   sass_dir: _sass
 
 permalink: /posts/:title/
-texture: /asset/tr1.png
+texture:
   title: P TaeJoon
   tagline: Developer. Sogang University
   date_format: "%b %-d, %Y"
