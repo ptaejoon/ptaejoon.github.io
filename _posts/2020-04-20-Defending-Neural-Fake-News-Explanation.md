@@ -21,23 +21,25 @@ tags:
 <h2>1. Grover의 모델 구조 : GPT2</h2>
 논문의 <b> Grover: Modeling Conditional Generation of Neural Fake News</b> 에선 
 	
-	"We draw on recent progress in training large Transformers for language modeling (Vaswani et al., 2017),    building Grover using the same architecture as for GPT2 (Radford et al., 2019)."
+	"We draw on recent progress in training large Transformers for language modeling (Vaswani et al., 2017),   
+	building Grover using the same architecture as for GPT2 (Radford et al., 2019)."
 
 라고, Grover 모델이 GPT2 모델을 그대로 사용한다고 언급하였습니다.   
 GPT2 에 대한 설명 이전에, 다른 시계열 모델에 대한 간단한 설명부터 시작하겠습니다.   
 RNN 부터 시작된 시계열 모델의 주된 문제는 앞에서 데이터의 정보가 사라지는 Vanishing Gradient Problem이었습니다. 
-![wikipedia-LSTM](/asset/explanation/exp2.png)
+![wikipedia-LSTM](/asset/explanation/exp2.png)   
 이를 해결하기 위해 위의 그림과 같은 LSTM을 고안하였습니다. RNN보다 성능 개선이 이뤄졌으나, 여전히 긴 레이어를 가진 LSTM에서 Vanishing Gradient Problem은 해결할 수 없었습니다.   
 이 다음으로 Attention이라는 개념이 사용됩니다. 
 attention이란 쉽게 설명하면 "Pay Attention!" 과 같은 의미에서처럼 어느 부분에 집중해야 할지 정해주는 개념이라고 생각하면 쉽습니다. 
 ![wikidocs.net](/asset/explanation/exp3.png)   
-wikidocs에서 가져온 어텐션에 대한 설명 이미지입니다. 더 자세한 설명은 [wikidocs][wikidocs.net/22893] 에서 참고하시기 바랍니다.   
+wikidocs에서 가져온 어텐션에 대한 설명 이미지입니다. 더 자세한 설명은 ![wikidocs](wikidocs.net/22893) 에서 참고하시기 바랍니다.   
 그런데, RNN 모델은 시계열 데이터이기 때문에, 병렬처리가 어렵다는 점에서 Attention과 CNN을 합친 결과가 Transformer 입니다.   
 ![exp4](/asset/explanation/exp4.png)   
 "Attention Is All You Need" 에 소개된 Transformer 의 구조입니다.   
 Transformer는 다음에 올 토큰을 계산할 때 아래와 같은 수식을 사용합니다. 
 ![tr2](/asset/translation/tr2.png)   
 즉, 앞의 N-1 개에 대한 조건부확률을 통해 가장 높은 확률을 가진 토큰을 선택하는 방법입니다. 이런 Transformer의 방식으로 학습한 모델이 바로 GPT2와 BERT 입니다.   다만 BERT는 Bidirectional Encoder Representations from Transformers 라는 뜻으로 bi-directional 하다는 차이가 있습니다. bi-directional 하기 위해서 BERT는 Masking, Next sentence prediction 이라는 두 가지 방법을 이용한 학습을 합니다.   
+   
 GPT2의 경우 BERT처럼 bidirectinoal 하지는 않습니다. 따라서 GPT2는 문장의 sequence를 순서대로 생성하고, 생성하면서 또 생성한 데이터를 input으로 사용하며 계속 sequence를 만들어갑니다. (start) 토큰으로 시작해 (end) 토큰이 발생할 때까지 계속 토큰을 생성한다고 보면 될 것 같습니다.   
 
 <h2>2. Top-p sampling (nucleus sampling)</h2>   
