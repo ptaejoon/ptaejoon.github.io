@@ -11,7 +11,7 @@ tags:
   
   
 ---
-![tr1.png](_asset/image/translation/tr1.png)
+![tr1.png](/_asset/image/translation/tr1.png)
 NeurIPS 2019에 채택된 Defending Against Neural Fake News 입니다.
 <href>https://rowanzellers.com/grover/</href> 를 통해 더 많은 정보와 코드를 볼 수 있습니다.
 
