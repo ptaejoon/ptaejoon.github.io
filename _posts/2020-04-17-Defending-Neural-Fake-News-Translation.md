@@ -11,37 +11,37 @@ tags:
   
   
 ---
-![tr1](/asset/translation/tr1.png)
-
+![tr1](/asset/translation/tr1.png)   
 NeurIPS 2019에 채택된 Defending Against Neural Fake News 입니다.
+    
 [[https://rowanzellers.com/grover/]](https://rowanzellers.com/grover/)를 통해 더 많은 정보와 코드를 볼 수 있습니다.
-
-직접적인 설명 이전에 한글 번역으로 시작해보려 합니다.
-해당 논문의 마지막에는 신경망으로 생성될 Fake News에 대한 연구 윤리까지 제시하고 있습니다. 이 부분은 생략하겠습니다.
-Appendix에 나와있는 모델 구조는 추후에 다시 포스팅하겠습니다.
+   
+직접적인 설명 이전에 한글 번역으로 시작해보려 합니다.   
+해당 논문의 마지막에는 신경망으로 생성될 Fake News에 대한 연구 윤리까지 제시하고 있습니다. 이 부분은 생략하겠습니다.   
+Appendix에 나와있는 모델 구조는 추후에 다시 포스팅하겠습니다.   
 오역 및 미숙한 이해 부분은 차차 개선하겠습니다. 현재 오역의 여지가 있는 부분은 *으로 표시하였습니다.
-
-0. 초록
-최근의 자연어 처리는 두 가지 측면을 보입니다. 요약이나 번역 등에서 긍정적인 모습을 보이는 반면, neural fake news를 만드려는 부정적인 측면 또한 가지고 있습니다. 여기서 neural fake news란, 실제 뉴스를 매우 그럴싸하게 흉내내는 특정 목적을 가진 가짜 뉴스를 의미합니다.
+   
+<h1>0. 초록</h1>   
+최근의 자연어 처리는 두 가지 측면을 보입니다. 요약이나 번역 등에서 긍정적인 모습을 보이는 반면, neural fake news를 만드려는 부정적인 측면 또한 가지고 있습니다. 여기서 neural fake news란, 실제 뉴스를 매우 그럴싸하게 흉내내는 특정 목적을 가진 가짜 뉴스를 의미합니다.   
 현대 컴퓨터 보안은 threat modeling 에 의존하고 있습니다. 이는 공격자의 시각으로 보안의 취약점을 찾아내는 것을 의미합니다. 즉, neural fake news 를 잘 대응하기 위해선 먼저 그 대상을 조사하고 위험성을 특징짓는 것이 중요합니다. 따라서, 우리는 주제를 선택가능한 기사 생성기 Grover를 제시합니다. Grover는 '백신과 자폐의 연관성이 발견되다' 라는 기사 제목을 작성하면 나머지 부분을 스스로 작성할 수 있습니다. 사람들은 Grover가 작성한 기사에 사람이 쓴 가짜 뉴스보다 더 높은 신뢰성을 가졌습니다.
 Grover같은 가짜 뉴스 생성기에 대항하는 입증 기술을 만드는 것이 매우 중요합니다. 훈련 데이터에 접근할 수 있을 때, 우리는 가장 성능이 좋은 discriminator들이 73%의 정확도로 사람이 쓴 기사와 신경망으로 생성된 기사를 구분함을 알 수 있었습니다. 납득이 어렵겠지만, Grover의 가짜 기사를 가장 잘 구분할 수 있는 것은 Grover 자체라는 결과가 나왔습니다. 더 나아가, 노출 편향 (exposure bias)이 Generator와 비슷한 discriminator가 이용가능한 요소들을 만들어낸다는 것을 알아낼 수 있었습니다.
 마지막으로, 기술에 대한 윤리 문제의 논의 끝에 신경망 생성 가짜 뉴스 탐색의 발전을 위해 Grover를 배포하기로 결정했습니다.
-
-1. 도입
+   
+<h1>#1. 도입</h1>   
 온라인에서 퍼지는 가짜 뉴스들은 최근 주된 사회 문제로 부상했습니다. 광고 수익, 의견 주장, 심지어 선거를 이기기 위해서까지 가짜 구설수들을 만들어 퍼트리고 있습니다. 따라서 인터넷에서 이런 거짓 정보들이 퍼지는 것을 막는 것이 기술적, 정치적으로 중요한 이슈가 되고 있습니다.
-
+   
 현재 알려진 바로는 대부분의 가짜 정보들은 사람들이 임의로 만든 것입니다. 그러나, 자연어 생성 기술이 발달하면서, 이를 이용해 진짜 같아 보이는 선전물들을 자신이 원하는 대로 만들어 배포할 것입니다. 따라서, 우리가 텍스트 생성 기술의 진보에 감탄하면서도, 한편으론 AI 기반의 '신경망으로 제작된' 가짜 뉴스에 대해 우려할 필요가 있습니다.
-
+   
 이 논문에선 실제 이런 일들이 퍼지기 전에 이 현상을 이해하고 대응해보려 합니다. 즉, 보안 방식의 일종인 threat modeling을 이용할 것입니다. 이는 방어 대책을 마련하기 위해서 발생 가능한 위협과 취약점을 분석하는 행위를 뜻합니다. 허위 정보의 위험성 연구를 위해, 이를 생성하는 모델 Grover를 제시합니다. Grover는 완전히 새로운 기사를 만들 수 있는데, 또한 주제를 조종할 수 있습니다. 텍스트 내용 뿐만 아니라 제목, 출처, 날짜, 기자명까지 말이죠. Grover는 주제를 조종할 수 있는 텍스트 생성에 대한 adversary 역할을 할 것입니다.
-
+   
 사람들은 사람이 직접 쓴 허위 정보보다 Grover로 만든 허위 정보가 더 믿을만하다고 평가했습니다. 따라서, Grover와 같은 생성자들에 대한 정보 입증 기술을 발전시키는 것은 매우 중요한 연구 주제입니다. 우리는 구별자가 5000개의 Grover가 생성한 기사를 참고하고, 실제 뉴스 기사는 제한 없이 참조할 수 있다고 가정했습니다. 이 환경 구성에서 가장 우수한 deep pretrained language models은 73%를 달성하였습니다. 그러나, Grover 가 discriminator로 작동할때, 92%의 성능을 내는 것을 확인할 수 있었습니다. 즉, 가짜 뉴스를 생성하는 모델이 가짜 뉴스를 가장 잘 구분한다는 것이었습니다.
-
+   
 또한 우리는 어떻게 deep pretrained language model들이 실제 뉴스와 가짜 뉴스를 구분하는지 연구했습니다. 이때, 뉴스 생성중에 주된 요소가 노출 편향(exposure bias)로써 생성되는 것을 알 수 있었습니다. 즉, 생성자는 완벽하지 않기에, 기사 길이가 늘어나며 out-of-distribution(비정상 샘플) 을 더 떨어트리는 분포에서 샘플링을 진행합니다.
 그러나, 이러한 효과를 완화하는 이 sampling 전략은 또한 discriminator가 이용할 수 있는 강력한 도구를 제공합니다.
-
+   
 *(Policy 부분 문단 생략하였습니다.)
-
-2. Fake News in a Neural and Adversarial Setting
+   
+<h1>2. Fake News in a Neural and Adversarial Setting</h1>   
 사람들이 작성한 가짜 뉴스가 다양하기 때문에 adversary가 무엇을 해야할지, 그리고 이를 확인하는 verifier는 무엇을 해야할지 제시하고자 합니다.
 
 가짜 뉴스의 범위.
@@ -59,7 +59,7 @@ verifier의 목적은 기사 내용이 진짜인지 거짓인지 구분입니다
 
 두 플레이어들은 공격자와 방어자로써 경쟁을 벌입니다. 입증자가 치밀해질수록 적대자도 치밀해집니다. 따라서, 우리는 다음 섹션에서 다룰, 가장 강한 적대자의 공격에 대해 준비할 필요가 있습니다.
 
-3. Grover: Modeling Conditional Generation of Neural Fake News
+<h1>3. Grover: Modeling Conditional Generation of Neural Fake News</h1>
 현재 온라인 상의 허위 정보를 보면, 적대자들은 특정 목적을 가진 컨텐츠를 만든다고 가정가능합니다. Radford의 19년 논문을 통해 최근 논문들이 실제 사람이 쓴 것 같은 텍스트를 만들 수 있음이 알려졌지만, 사람이 주제를 조정 가능한 텍스트 생성은 없었습니다. 그러므로, 가짜 뉴스의 실제 특성을 반영하기 위해서는 Grover는 실제 기사같으면서도 목적을 조종할 수 있는 생성이 가능해야 합니다.
 
 ![tr2.png](/asset/translation/tr2.png)
@@ -88,7 +88,7 @@ Dataset
 Learning 
 Grover 모델은 RealNews 데이터의 무작위로 샘플링된 1024 시퀀스로 훈련시켰습니다. 다른 hyperparameter는 appendix를 참고하시기 바랍니다. iteration은 80만번이고, 512 batch size에 256 TPU v3 cores를 사용했습니다. 훈련 시간은 2주가 걸렸습니다.
 
-3.1 Language Modeling Results : Measuring the importance of data, context, and size
+<h2>3.1 Language Modeling Results : Measuring the importance of data, context, and size</h2>
 Grover는 2019년 4월 테스트 셋을 이용해서 validation을 진행했습니다. 이때 다른 unconditional language model과 비교했습니다. 두 가지의 evaluation을 진행합니다.
 	Unconditional: context가 주어지지 않고 모델이 body를 생성해야 하는 점.
 	conditional: 완전한 metadata가 주어지는 점.
@@ -98,13 +98,13 @@ Grover는 2019년 4월 테스트 셋을 이용해서 validation을 진행했습�
 
 ![tr4.png](/asset/translation/tr4.png)
 
-3.2 Carefully restricting the variance of generations with Nucleus Sampling
+<h2>3.2 Carefully restricting the variance of generations with Nucleus Sampling</h2>
 Grover로 샘플링 하는 것은 모델이 left-to-right 언어 모델처럼 진행하기에 복잡하지 않아 보입니다.
 그러나 디코딩 알고리즘을 잘 고르는 것이 중요합니다. 최대가능도(likelihood-maximization) 전략이 closed-ended 생성에서 잘 동작하였지만, open-ended generation에서 degenerate text를 만드는 것을 확인할 수 있었습니다.* 그러나, 6장에서 볼 수 있듯이, 분산값을 제한하는 것 또한 중요합니다.
 
 이 논문에서는 Nucleus Sampling을 사용합니다. 제한값 p가 주어질때, 각 스텝마다 누적 확률이 top p%에 속하는 단어들로 샘플링을 합니다.
 
-4. Humans are Easily Fooled by Grover-written Propaganda
+<h1>4. Humans are Easily Fooled by Grover-written Propaganda</h1>
 가장 큰 모델인 Grover-mega로 만든 허위 정보를 평가했습니다. 제한값 p=0.96입니다. 4 종류의 기사를 함께 준비합니다. 사람이 쓴 저명한 뉴스 기사 (Human News), Grover가 해당 Human News를 이용해 쓴 (Machine News), 가짜 뉴스 웹사이트의 기사(Human Propaganda), 그리고 Graver가 해당 Human Propaganda를 이용해 쓴 (Machine Propaganda) 가 그 4 종류의 기사입니다. Amazon Mechanical Turk를 이용해 세 가지를 평가했습니다. 
 	스타일의 일관성
 	내용의 합리성
@@ -112,7 +112,7 @@ Grover로 샘플링 하는 것은 모델이 left-to-right 언어 모델처럼 �
 
 그 결과 Grover 가 쓴 기사가 사람이 쓴 기사만큼 신뢰도가 높진 않지만 propaganda보다는 높음을 확인할 수 있었습니다. 또한 Machine Propaganda 도 Human Propaganda보다 신뢰도가 높았습니다.
 
-5. Neural Fake News Detection
+<h1>5. Neural Fake News Detection</h1>
 
 Grover로 만들어진 가짜 뉴스들은 neural fake news detection이 중요한 연구 주제임을 밝혀냈습니다. 입증자를 이용하면 이를 구분할 수 있습니다. 
 a. Grover. 텍스트 생성 대신 구별을 할 수 있는 버전을 고려했습니다. GPT와 유사하게, [CLS]라는 특별한 토큰을 각 기사의 끝마다 삽입하고, final hidden state에서 이를 추출합니다. hidden state는 linear layer로 학습되어* Human과 Machine을 구분하게 됩니다. 
@@ -126,30 +126,30 @@ d. FastText
 
 모든 모델들은 cross entropy를 최소화 하는 방향으로 훈련되었습니다.
 
-5.1 A semi-supervised setting for neural fake news detection
+<h2>5.1 A semi-supervised setting for neural fake news detection</h2>
 온라인엔 매우 많은 기사들이 있지만, 대부분 검색되는 기사들은 최근 일들을 다루고 있습니다. 따라서 적대자로부터 생성된 가짜 뉴스가 매우 적을 수 있습니다. 즉 fake news detection을 semi-supervised problem으로 정의합니다. 신경망의 입증자는 RealNews 트레이닝 셋의 모든 사람이 쓴 기사들에 접근할 수 있습니다. 그러나 적대자로부터 생성된 기사에는 한계가 있습니다. 2019년 4월의 뉴스를 이용해 body text 1만개를 만듭니다. 다른 1만개는 사람이 작성한 뉴스로 사용합니다. 이 2만개의 데이터를 잘 분리하여 1만개는 학습, 2천개는 validation, 8천개는 테스트에 사용합니다.
 두가지의 평가 방식을 고려합니다. Unpaired 세팅에선 구별자는 단 하나의 뉴스를 입력받으며 Human, Machine을 구분해야 합니다. paired 세팅에선 같은 metadata를 가지는 뉴스 기사 2개를 받으며, 하나는 실제 기사이고 하나는 신경망으로 만들어진 기사입니다. 이때, 구별자는 신경망으로 만들어진 기사에 Machine 일 확률을 더 높게 부여해야 합니다. 
 
-5.2 Discrimination results: Grover performs best at detecting Grover’s fake news
+<h2>5.2 Discrimination results: Grover performs best at detecting Grover’s fake news</h2>
 실험 결과는 몇 가지 특성을 보여줍니다.
 	1. paired 세팅은 unpaired 보다 쉽다고 사료됨.
 	2. generator와 discriminator 간의 경쟁에서 모델 사이즈는 매우 중요함
 	3. Grover가 다른 모델들보다 우수한 성능을 보임
 이는 결국 fake news를 구별하는데 있어서, fake news를 생성시킨 generator와 유사한 bias를 가져야만 이를 구분하기 쉽다는 것을 알 수 있습니다.
 
-5.3 Weak supervision: what happens if we don’t have access to Grover-Mega?
+<h2>5.3 Weak supervision: what happens if we don’t have access to Grover-Mega?</h2>
 위에서 Grover가 같은 적대자에게 있어서 더 좋은 구별자 역할을 수행함을 설명했습니다. 
 그렇다면, Grover-mega를 사용하고 p값이 알려지지 않은 적대자를 고려해봅시다. 이 설정에서, 우리는 Grover Base, Large를 이용할 수 있습니다. 
 위 결과들은 Grover가 테스트 시에 마주할 똑같은 적대자로부터 생성된 가짜 뉴스의 수가 적당히 많을 때 효과적인 discriminiator로 작용한다고 설명합니다. 그렇다면 이런 가정을 더 낮추면 어떻게 될까요? 따라서, 우리는 Grover-Mega와 알려지지 않은 top-p threshold 0.14를 이용해 만드는 가짜 뉴스를 구분하는 문제를 가정했습니다. 이 문제에서, 우리는 Grover-Mega보다 약한 Grover-Base, Large만 사용할 수 있습니다. 오직 X개의 Grover-Mega의 샘플에만 접근할 수 있고, 5000-x개의 다른 Weaker Model에서의 샘플을 사용합니다. top-p는 [0.9~1.0]의 범위를 갖습니다. *
 추가적인 generation을 확인하는 것이 구별자에게 매우 큰 도움이 됨을 알 수 있습니다. *
 
 
-6. How does a model distinguish between human and machine text?
+<h1>6. How does a model distinguish between human and machine text?</h1>
 이 섹션에서 우리는 Grover가 왜 가짜 뉴스를 감지하는데 가장 좋은지를 알아보려 합니다. 그 원인에는 exposure bias와 varian-reduction가 모순 관계에 있기 때문입니다. bias를 낮추는 알고리즘들이 또한 discriminator가 사용할 artifacts들을 만드는 것입니다.
 
 ![tr5.png](/asset/translation/tr5.png)
 
-exposure bias
+<h3>exposure bias</h3>
 Eq1를 최대화시키는 모델은 오직 사람이 쓴 기사로만 학습이 됩니다. 즉, 모델이 생성한 데이터는 사용하지 않습니다. 이는 exposure bias라는 문제를 일으킵니다.
 *exposure bias
 body 의 position에 따라 perplexity를 조사했습니다.
