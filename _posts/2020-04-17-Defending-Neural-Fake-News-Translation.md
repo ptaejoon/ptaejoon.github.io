@@ -12,6 +12,7 @@ tags:
   
 ---
 ![tr1](/asset/translation/tr1.png)
+
 NeurIPS 2019에 채택된 Defending Against Neural Fake News 입니다.
 [[https://rowanzellers.com/grover/]](https://rowanzellers.com/grover/)를 통해 더 많은 정보와 코드를 볼 수 있습니다.
 
@@ -61,7 +62,7 @@ verifier의 목적은 기사 내용이 진짜인지 거짓인지 구분입니다
 3. Grover: Modeling Conditional Generation of Neural Fake News
 현재 온라인 상의 허위 정보를 보면, 적대자들은 특정 목적을 가진 컨텐츠를 만든다고 가정가능합니다. Radford의 19년 논문을 통해 최근 논문들이 실제 사람이 쓴 것 같은 텍스트를 만들 수 있음이 알려졌지만, 사람이 주제를 조정 가능한 텍스트 생성은 없었습니다. 그러므로, 가짜 뉴스의 실제 특성을 반영하기 위해서는 Grover는 실제 기사같으면서도 목적을 조종할 수 있는 생성이 가능해야 합니다.
 
-![tr2.png](/_asset/image/translation/tr2.png)
+![tr2.png](/asset/translation/tr2.png)
 
 문서 X의 확률은 이전 토큰들이 생성되었을 때 Xi번째 토큰이 생성될 때의 조건부 확률의 곱 입니다.
 문서는 구조화되지 않은 text field로 취급되는데, <start> 토큰으로 시작하고, <end> 토큰으로 종료합니다. <end>는 텍스트 생성을 끝내기 때문에 특히 중요합니다. 그러나, 뉴스 기사는 text field 외에 다른 구조도 필요로 합니다. Metadata field는 해당 기사가 작성된 웹사이트인 domain, 기사 작성 날자인 date, 저자인 authors, 그리고 headline을 포함합니다. 뉴스 기사를 만든다는 것은 이 모든 요소들을 필요로 할 뿐만 아니라, 이 요소들을 이용해 기사 생성을 조종할 수 있습니다. 하나의 기사는 따라서 다음의 결합 분포를 따릅니다.
@@ -74,7 +75,7 @@ Grover의 접근법은 multi-field를 가진 문서들을 효율적으로 생성
 
 Figure 2는 어떻게 Grover가 백신을 반대하는 기사를 만드는지의 일련의 과정입니다. 적대자가 domain, date, headline을 명시받습니다. 그 뒤 body를 만들고, 이는 다시 author와 headline을 만드는데 사용가능합니다.
 
-![tr3.png](/_asset/image/translation/tr3.png)
+![tr3.png](/asset/translation/tr3.png)
 
 모델 훈련동안, 랜덤하게 나뉜 F1, F2의 공동의 셋을 이용해 추론을 합니다.* 또한 무작위로 각각의 field를 10%의 확률로 drop 합니다. 그러나, body의 경우 35%의 확률로 drop 합니다. 이 과정이 모델이 unconditional generation을 수행하도록 만듭니다. 앞서 언급한 순서대로 field를 정렬한 뒤, 토큰을 합칩니다. 모델은 그 뒤 F1의 cross-entropy를 줄이는 방향으로 훈련됩니다.
 
@@ -95,7 +96,7 @@ Grover는 2019년 4월 테스트 셋을 이용해서 validation을 진행했습�
 
 결과는 Figure 3에서 확인할 수 있습니다. Grover는 conditional validation에서 눈에 띌 정도로 Perplexity를 낮췄습니다. 또한 Grover의 사이즈가 큰 모델을 쓸수록 perplexity가 떨어졌습니다. 아마도 OpenAI WebText 코퍼스가 뉴스가 아닌 기사들도 포함하고 있기 때문에 GPT2모다 높은 성능을 낸다고 생각됩니다.
 
-![tr4.png](/_asset/image/translation/tr4.png)
+![tr4.png](/asset/translation/tr4.png)
 
 3.2 Carefully restricting the variance of generations with Nucleus Sampling
 Grover로 샘플링 하는 것은 모델이 left-to-right 언어 모델처럼 진행하기에 복잡하지 않아 보입니다.
@@ -146,7 +147,7 @@ d. FastText
 6. How does a model distinguish between human and machine text?
 이 섹션에서 우리는 Grover가 왜 가짜 뉴스를 감지하는데 가장 좋은지를 알아보려 합니다. 그 원인에는 exposure bias와 varian-reduction가 모순 관계에 있기 때문입니다. bias를 낮추는 알고리즘들이 또한 discriminator가 사용할 artifacts들을 만드는 것입니다.
 
-![tr5.png](/_asset/image/translation/tr5.png)
+![tr5.png](/asset/translation/tr5.png)
 
 exposure bias
 Eq1를 최대화시키는 모델은 오직 사람이 쓴 기사로만 학습이 됩니다. 즉, 모델이 생성한 데이터는 사용하지 않습니다. 이는 exposure bias라는 문제를 일으킵니다.
