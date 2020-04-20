@@ -1,3 +1,18 @@
+---
+
+
+layout: post
+title: "Defending Against Neural Fake News 정리"
+excerpt : "Grover 정리"
+categories:
+  - Papers
+tags:
+  - Papers
+  
+  
+---
+
+
 ![Grover](/asset/translation/tr1.png)
 이 포스트에선 번역했던 논문인 "Defending Neural Fake News" 에 대한 추가적인 설명을 진행하겠습니다.   
 해당 포스트의 주제는 NeuIPS 2019 에 accepted 되었던 Defending Neural Fake News에 대한 포스트입니다.   
