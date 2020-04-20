@@ -54,9 +54,11 @@ Grover같은 가짜 뉴스 생성기에 대항하는 입증 기술을 만드는 
 본 논문은 가짜 뉴스 생성과 감지를 하나의 adversarial game으로 간주하고, 게임의 두 player를 제시합니다.   
 
 	adversary (적대자)
+
 adversary의 주 목적은 특정 속성을 만족하는 가짜 스토리 생성입니다. 스토리는 사람과 verifier 모두에게 진짜처럼 보여야 합니다.
 
 	verifier (입증자)
+
 verifier의 목적은 기사 내용이 진짜인지 거짓인지 구분입니다. 입증자는 진짜 뉴스에는 제한이 없지만 적대자로부터 일부의 기사만을 받습니다. 이런 설정은 현 상황을 그대로 반영합니다. 즉, 한 플랫폼이 불량 계정을 차단시킬때, 계정이 배포하던 가짜 뉴스들을 학습 데이터로 반영가능하기 때문입니다. 반면, 새로 생성된 계정에 대해선 가짜 뉴스를 수집하기 어렵습니다.   
 
 두 플레이어들은 공격자와 방어자로써 경쟁을 벌입니다. 입증자가 치밀해질수록 적대자도 치밀해집니다. 따라서, 우리는 다음 섹션에서 다룰, 가장 강한 적대자의 공격에 대해 준비할 필요가 있습니다.
@@ -93,8 +95,10 @@ Grover 모델은 RealNews 데이터의 무작위로 샘플링된 1024 시퀀스�
 <h3>3.1 Language Modeling Results : Measuring the importance of data, context, and size</h3>
 Grover는 2019년 4월 테스트 셋을 이용해서 validation을 진행했습니다. 이때 다른 unconditional language model과 비교했습니다. 두 가지의 evaluation을 진행합니다.
 
-	Unconditional: context가 주어지지 않고 모델이 body를 생성해야 하는 점.
-	conditional: 완전한 metadata가 주어지는 점.
+	Unconditional:    
+	context가 주어지지 않고 모델이 body를 생성해야 하는 점.   
+	conditional:    
+	완전한 metadata가 주어지는 점.
 이때 body만을 이용해 perplexity를 측정합니다.
 
 결과는 Figure 3에서 확인할 수 있습니다. Grover는 conditional validation에서 눈에 띌 정도로 Perplexity를 낮췄습니다. 또한 Grover의 사이즈가 큰 모델을 쓸수록 perplexity가 떨어졌습니다. 아마도 OpenAI WebText 코퍼스가 뉴스가 아닌 기사들도 포함하고 있기 때문에 GPT2모다 높은 성능을 낸다고 생각됩니다.
@@ -120,7 +124,11 @@ Grover로 샘플링 하는 것은 모델이 left-to-right 언어 모델처럼 �
 
 Grover로 만들어진 가짜 뉴스들은 neural fake news detection이 중요한 연구 주제임을 밝혀냈습니다. 입증자를 이용하면 이를 구분할 수 있습니다. 
 
-	a. Grover. 텍스트 생성 대신 구별을 할 수 있는 버전을 고려했습니다. GPT와 유사하게, [CLS]라는 특별한 토큰을 각 기사의 끝마다 삽입하고, final hidden state에서 이를 추출합니다. hidden state는 linear layer로 학습되어* Human과 Machine을 구분하게 됩니다. 실제 상황을 시물레이션 하기 위해서 discriminator를 위한 Grover를 700k 반복마다 초기화하고, Generator의 경우 800k마다 초기화를 했습니다.
+	a. Grover.   
+	텍스트 생성 대신 구별을 할 수 있는 버전을 고려했습니다.   
+	GPT와 유사하게, [CLS]라는 특별한 토큰을 각 기사의 끝마다 삽입하고, final hidden state에서 이를 추출합니다.   
+	hidden state는 linear layer로 학습되어* Human과 Machine을 구분하게 됩니다. 실제 상황을 시물레이션 하기 위해서   
+	discriminator를 위한 Grover를 700k 반복마다 초기화하고, Generator의 경우 800k마다 초기화를 했습니다.   
 	b. GPT2
 	c. BERT
 	d. FastText
@@ -137,6 +145,7 @@ Grover로 만들어진 가짜 뉴스들은 neural fake news detection이 중요�
 	1. paired 세팅은 unpaired 보다 쉽다고 사료됨.
 	2. generator와 discriminator 간의 경쟁에서 모델 사이즈는 매우 중요함
 	3. Grover가 다른 모델들보다 우수한 성능을 보임
+	
 이는 결국 fake news를 구별하는데 있어서, fake news를 생성시킨 generator와 유사한 bias를 가져야만 이를 구분하기 쉽다는 것을 알 수 있습니다.
 
 <h3>5.3 Weak supervision: what happens if we don’t have access to Grover-Mega?</h3>
