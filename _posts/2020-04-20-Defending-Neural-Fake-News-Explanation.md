@@ -21,7 +21,8 @@ tags:
 <h2>1. Grover의 모델 구조 : GPT2</h2>
 논문의 <b> Grover: Modeling Conditional Generation of Neural Fake News</b> 에선 
 	
-	"We draw on recent progress in training large Transformers for language modeling (Vaswani et al., 2017),   building Grover using the same architecture as for GPT2 (Radford et al., 2019)."
+	"We draw on recent progress in training large Transformers for language modeling (Vaswani et al., 2017),    building Grover using the same architecture as for GPT2 (Radford et al., 2019)."
+
 라고, Grover 모델이 GPT2 모델을 그대로 사용한다고 언급하였습니다.   
 GPT2 에 대한 설명 이전에, 다른 시계열 모델에 대한 간단한 설명부터 시작하겠습니다.   
 RNN 부터 시작된 시계열 모델의 주된 문제는 앞에서 데이터의 정보가 사라지는 Vanishing Gradient Problem이었습니다. 
