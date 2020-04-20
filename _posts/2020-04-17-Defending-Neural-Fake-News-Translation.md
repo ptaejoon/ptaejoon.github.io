@@ -11,9 +11,9 @@ tags:
   
   
 ---
-![tr1.png](/_asset/image/translation/tr1.png)
+![Image](/_asset/image/translation/tr1.png)
 NeurIPS 2019에 채택된 Defending Against Neural Fake News 입니다.
-<href>https://rowanzellers.com/grover/</href> 를 통해 더 많은 정보와 코드를 볼 수 있습니다.
+[[https://rowanzellers.com/grover/]](https://rowanzellers.com/grover/)를 통해 더 많은 정보와 코드를 볼 수 있습니다.
 
 직접적인 설명 이전에 한글 번역으로 시작해보려 합니다.
 해당 논문의 마지막에는 신경망으로 생성될 Fake News에 대한 연구 윤리까지 제시하고 있습니다. 이 부분은 생략하겠습니다.
