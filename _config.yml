@@ -14,18 +14,18 @@ sass:
   sass_dir: _sass
 
 permalink: /posts/:title/
-texture:
-  title: Adam Denisov
-  tagline: Developer. Designer
+texture: /asset/tr1.png
+  title: P TaeJoon
+  tagline: Developer. Sogang University
   date_format: "%b %-d, %Y"
   style: black
   showNav: false
-  showPicker: true
+  showPicker: false
 
   # generate social links in footer
   social_links:
     twitter: thelehhman
-    github:  thelehhman
+    github:  https://github.com/ptaejoon
     linkedIn: in/thelehhman
     rss: rss
  
