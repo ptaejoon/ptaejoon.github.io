@@ -14,7 +14,7 @@ tags:
 
 ![Grover](/asset/translation/tr1.png)
 이번 포스트에선 정리했던 논문인 "Defending Neural Fake News" 구현에 대한 부분을 설명하겠습니다.   
-[https://github.com/rowanz/grover/][https://rowanzellers.com/grover/]에서 해당 논문에 대한 구현 코드가 게시되어 있습니다. 또 download_model.py 를 이용해 데이터셋과 학습 체크포인트를 다운받을 수 있습니다. 이전에는 Grover-Mega의 체크포인트와 데이터셋을 구글 폼을 작성해야만 배포해주었는데, 최근에 BERT 관련 기술들이 많이 나오면서 배포를 제한하는 것이 무의미하다고 판단한 것 같습니다.  
+[https://github.com/rowanz/grover/](https://rowanzellers.com/grover/)에서 해당 논문에 대한 구현 코드가 게시되어 있습니다. 또 download_model.py 를 이용해 데이터셋과 학습 체크포인트를 다운받을 수 있습니다. 이전에는 Grover-Mega의 체크포인트와 데이터셋을 구글 폼을 작성해야만 배포해주었는데, 최근에 BERT 관련 기술들이 많이 나오면서 배포를 제한하는 것이 무의미하다고 판단한 것 같습니다.  
 
 ![Dirs](/asset/code_exp/git_dirs.png)
 

@@ -16,7 +16,7 @@ tags:
 ![Grover](/asset/translation/tr1.png)
 이 포스트에선 번역했던 논문인 "Defending Neural Fake News" 에 대한 추가적인 설명을 진행하겠습니다.   
 해당 포스트의 주제는 NeuIPS 2019 에 accepted 되었던 Defending Neural Fake News에 대한 포스트입니다.   
-논문과 더 많은 설명은 [https://rowanzellers.com/grover/][https://rowanzellers.com/grover/] 에서 확인할 수 있습니다.   
+논문과 더 많은 설명은 [https://rowanzellers.com/grover/](https://rowanzellers.com/grover/) 에서 확인할 수 있습니다.   
    
 <h2>1. Grover의 모델 구조 : GPT2</h2>
 논문의 __3 Grover: Modeling Conditional Generation of Neural Fake News__에선 
@@ -24,11 +24,11 @@ tags:
 라고, Grover 모델이 GPT2 모델을 그대로 사용한다고 언급하였습니다.   
 GPT2 에 대한 설명 이전에, 다른 시계열 모델에 대한 간단한 설명부터 시작하겠습니다.   
 RNN 부터 시작된 시계열 모델의 주된 문제는 앞에서 데이터의 정보가 사라지는 Vanishing Gradient Problem이었습니다. 
-![wikipedia-LSTM](/asset/translation/exp2.png)
+![wikipedia-LSTM](/asset/explanation/exp2.png)
 이를 해결하기 위해 위의 그림과 같은 LSTM을 고안하였습니다. RNN보다 성능 개선이 이뤄졌으나, 여전히 긴 레이어를 가진 LSTM에서 Vanishing Gradient Problem은 해결할 수 없었습니다.   
 이 다음으로 Attention이라는 개념이 사용됩니다. 
 attention이란 쉽게 설명하면 "Pay Attention!" 과 같은 의미에서처럼 어느 부분에 집중해야 할지 정해주는 개념이라고 생각하면 쉽습니다. 
-![wikidocs.net](/asset/translation/exp3.png)
+![wikidocs.net](/asset/explanation/exp3.png)
 wikidocs에서 가져온 어텐션에 대한 설명 이미지입니다. 더 자세한 설명은 [wikidocs][https://wikidocs.net/22893] 에서 참고하시기 바랍니다.   
 그런데, RNN 모델은 시계열 데이터이기 때문에, 병렬처리가 어렵다는 점에서 Attention과 CNN을 합친 결과가 Transformer 입니다.   
 ![exp4](/asset/explanation/exp4.png)
