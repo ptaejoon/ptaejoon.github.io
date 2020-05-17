@@ -151,6 +151,8 @@ top_p 와 top_k 샘플링 방식을 구현해둔 함수입니다. 이전 포스�
 
 <h4> (9) classification_model_fn_builder</h4>
 Classification을 위한 Estimator 함수 빌드용 함수입니다.   
+이전 포스트에서 Classification을 하기 위해선, article의 마지막 토큰을 (cls) 로 놓고 이 hidden state를 비교함으로써 알 수 있다고 언급했습니다. 이에 관한 코드는 아래와 같습니다.   
+<script src="https://gist.github.com/ptaejoon/b2a208bc8018bbb2410cb9c14f92060f.js"></script>   
 
 <h4> (10) sample & sample step</h4>
 모델의 결과로부터 top-p 혹은 top-k 방법을 사용해 단어(현재는 아직 토큰 번호)를 선정, 결과를 만드는 함수입니다.   
