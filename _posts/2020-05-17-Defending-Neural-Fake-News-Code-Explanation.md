@@ -162,3 +162,19 @@ train.py 는 모델을 학습시키는 코드입니다. 그동안 설명한 모�
 즉, GroverConfig 클래스를 이용해 모델 환경설정을 하고, 결과물을 도출할 Output 디렉토리를 만들고, Estimator를 위해 model_fn을 빌드, TPUEstimator를 설정 후 train을 실행시킵니다.  
 지금까지의 lm 디렉토리의 모든 요소를 담고 있습니다.   
 <script src="https://gist.github.com/ptaejoon/f7ffb4bd236d13cc37f44b97e30ab071.js"></script> 
+
+
+
+
+<h2> Top P sampling 과 Top K sampling 비교해보기 </h2>
+Github에서 제공하는 기본적인 예시를 따라해봤는데, Top K sampling을 쉽게 비교해볼 수 있어서 한번 실행시켜보았습니다.   
+![toppk](/asset/code_exp/topp_topk.png)   
+해당 예시의 헤드라인은 멀웨어 연구자 Marcus 가 유죄 선고를 받았다는 내용인데요. Sampling Generation을 위해 위의 이미지에는 없지만 Generation을 할때 기사의 내용도 함께 입력받았습니다. 이를 바탕으로 Text Generation을 해보았는데, 언뜻 보기에도 Top-p sampling이 훨씬 우수한 성능을 내는 것을 확인할 수 있습니다.   
+또한 Top-k 방식이 너무 결과가 안좋아서 GPT2 의 코드도 살펴보았는데, GPT2 역시 기본적으로 Top-p sampling을 하는 것을 확인했습니다.   
+<script src="https://gist.github.com/ptaejoon/cb92841ece080d552fc1be01a8c97d36.js"></script>
+
+<h2> Top P 를 낮출 경우? </h2>
+
+![low_p](/asset/code_exp/lowp.png)   
+
+Top-P를 0.5로 낮춘 경우에도, 생성되는 텍스트가 어색함은 별로 없는 것 같습니다. 그러나 내용이 완전히 바뀌었습니다. 입력된 텍스트의 경우 악성코드를 퍼뜨린 보안연구자의 유죄선고가 주된 내용인데, p 가 0.9 이상이었을 때는 이를 잘 반영하여 출력하였습니다. 반면에, p가 0.5인 상태로 generation을 할 경우 FBI에 위증을 한 죄로 선고되었다는 내용으로 뒤바뀌었습니다. 
