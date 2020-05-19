@@ -192,25 +192,31 @@ Grover를 처음부터 학습시키는 과정을 한번 따라해보려 합니�
 
 데이터셋을 만들거나 다운받았다면, 이제 generator를 트레이닝해보겠습니다. 먼저 git clone을 이용해 Grover 코드를 다운받고, 필요한 라이브러리들을 모두 다운로드받아야 합니다. 특히, tensorflow는 1.13.1 버전을 사용하기 때문에   
 
-{% highlight shell %}pip install tensorflow==1.13.1 {% endhighlight %}  
+{% highlight shell %}
+$pip install tensorflow==1.13.1 
+{% endhighlight %}  
 
 로 설치하시기 바랍니다.
 다운받은 뒤 grover 디렉토리에서 
 
-{% highlight shell %}export PYTHONPATH=$(pwd)   {% endhighlight %}
+{% highlight shell %}
+$export PYTHONPATH=$(pwd)   
+{% endhighlight %}
 
 를 이용해 grover 디렉토리를 파이썬 실행 기본 디렉토리로 지정합니다.   
 그 다음은 데이터셋을 jsonl 형식에서 학습을 위한 TFRecord 파일로 바꿔주는 작업을 해야합니다.
 
-{% highlight shell %}python realnews/prepare_lm_data.py -input_fn (데이터셋 파일) -base_fn (TFRecord_)   
-    (ex) python realnews/prepare_lm_data.py -input_fn tinyDataset.jsonl -base_fn tiny   {% endhighlight %}
+{% highlight shell %}
+$python realnews/prepare_lm_data.py -input_fn (데이터셋 파일) -base_fn (TFRecord_)   
+$(ex) python realnews/prepare_lm_data.py -input_fn tinyDataset.jsonl -base_fn tiny   
+{% endhighlight %}
 
 위 코드를 실행하면 grover 디렉토리에 tiny_train0000.tfrecord , tiny_val0000.tfrecord 와 같은 train과 validation을 위한 tfrecord 데이터셋을 만들어줍니다.   
 이제 만들어진 tfrecord 파일을 이용해 generator를 학습시킬 수 있습니다.
 
 {% highlight shell %}
-python lm/train.py --config_file lm/configs/base.json --input_file (tfrecord 파일) --iterations_per_loop (estimator의 step) --learning_rate (learning rate 값) --max_eval_steps (evaluation steps) --num_train_steps (training step) --num_warmup_steps (warming up steps) --output_dir (학습 checkpoint 저장할 디렉토리) --train_batch_size (배치사이즈) --use_tpu (True or False)   
-(ex) python lm/train.py --config_file lm/configs/base.json --input_file tiny_train0000.tfrecord --iterations_per_loop 1000 --learning_rate 5e-05 --max_eval_steps 100 --num_train_steps 1000 --num_warmup_steps 10000 --output_dir tiny --use_tpu False 
+$python lm/train.py --config_file lm/configs/base.json --input_file (tfrecord 파일) --iterations_per_loop (estimator의 step) --learning_rate (learning rate 값) --max_eval_steps (evaluation steps) --num_train_steps (training step) --num_warmup_steps (warming up steps) --output_dir (학습 checkpoint 저장할 디렉토리) --train_batch_size (배치사이즈) --use_tpu (True or False)   
+(ex) $python lm/train.py --config_file lm/configs/base.json --input_file tiny_train0000.tfrecord --iterations_per_loop 1000 --learning_rate 5e-05 --max_eval_steps 100 --num_train_steps 1000 --num_warmup_steps 10000 --output_dir tiny --use_tpu False 
 {% endhighlight %}
 
 물론 해당 argument마다 default 값이 설정되어 있기 때문에 필요하지 않은 부분은 생략하셔도 됩니다.   
@@ -219,9 +225,9 @@ training이 끝날 경우, 예시처럼 --output_dir을 tiny라고 설정할 경
 training이 끝났으면, 이 결과들을 이용해 직접 Machine Generated Article을 만들어볼 수 있습니다. 제가 직접 생성한 모델은 train을 얼마 진행하지 않았기 때문에, Grover에서 제공해주는 모델을 이용해 생성해보겠습니다.   
 
 {% highlight shell %}
-python download_model.py base   
-python sample/contextual_generate.py -model_config_fn lm/configs/base.json -model_ckpt models/base/model.ckpt -metadata_fn (jsonl 데이터 파일) -out_fn (출력될 파일)   
-python sample/contextual_generate.py -model_config_fn lm/configs/base.json -model_ckpt models/base/model.ckpt -metadata_fn tinyDataset.jsonl -out_fn tinyDataResult.jsonl   
+$python download_model.py base   
+$python sample/contextual_generate.py -model_config_fn lm/configs/base.json -model_ckpt models/base/model.ckpt -metadata_fn (jsonl 데이터 파일) -out_fn (출력될 파일)   
+$python sample/contextual_generate.py -model_config_fn lm/configs/base.json -model_ckpt models/base/model.ckpt -metadata_fn tinyDataset.jsonl -out_fn tinyDataResult.jsonl   
 {% endhighlight %}
 이제 tinyDataResult.jsonl 을 열어보면 인풋으로 들어왔던 데이터와 generation 과정을 거친 뒤에 생성된 새로운 값들이 추가되있는 것을 확인하실 수 있습니다. top_p 값인 top_ps, Grover를 이용해 만든 기사인 gens_article, gens_article의 코퍼스 인덱스인 gen's raw_article, 각 인덱스들의 확률인 probs_article이 추가되어있습니다.   
 
@@ -231,6 +237,6 @@ Grover의 discrimination은 가짜 뉴스를 판별하는 것이 아니라, "신
 태깅을 마친다면 discrimination 디렉토리에 있는 run_discrimination.py 를 실행시키면 되겠습니다.   
 
 {% highlight shell %}
-python discrimination/run_discrimination.py --batch_size (배치사이즈) --config_file lm/configs/base.json --do_train True --input_data (학습데이터) --use_tpu False   
+$python discrimination/run_discrimination.py --batch_size (배치사이즈) --config_file lm/configs/base.json --do_train $True --input_data (학습데이터) --use_tpu False   
 {% endhighlight %}
 위와 같은 방식으로 학습시키실 수 있습니다.   
